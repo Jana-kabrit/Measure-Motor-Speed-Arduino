@@ -1,0 +1,2 @@
+# Measure-Motor-Speed-Arduino
+The aim of this experiment is to design and simulate a circuit that will measure the speed of a DC motor with an integrated encoder in RPM (rotations per minute). The direction of rotation will be found using an Arduino Uno, and the results will be displayed on an LCD screen. The simulation will take place on Tinker CAD. The experiment was successful and the desired results were obtained.
