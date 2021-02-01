@@ -1,0 +1,54 @@
+#include <LiquidCrystal.h> 
+
+LiquidCrystal lcd(1, 2, 4, 5, 6, 7);
+
+int count = 0, interval = 200;
+const int encoderB = 12;
+const int encoderA = 13;
+unsigned long int previousmillis = 0;
+int previousStateB = 0, currentStateB;
+int previousStateA = 0, currentStateA;
+float speedRPM = 0;
+bool direction = false;
+
+void setup() {
+  lcd.begin(16, 2);
+  pinMode(encoderB, INPUT_PULLUP);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  analogWrite(10, 0);
+  analogWrite(9,255);
+}
+
+void loop() {
+  currentStateB = digitalRead(encoderB);
+  currentStateA = digitalRead(encoderA);
+  if(direction == false){
+    if(currentStateA == 1 && currentStateB == 0){
+      lcd.setCursor(0, 1);
+      lcd.print("CounterClockwise");
+      direction = true;
+    }
+    if(currentStateA == 0 && currentStateB == 1){
+      lcd.setCursor(0, 1);
+      lcd.print("Clockwise");
+      direction = true;
+    }
+  }
+  if(currentStateB != previousStateB){
+    previousStateB = currentStateB;
+    if(currentStateB == 1){
+      count++;
+    }
+    
+  }
+  if(millis() - previousmillis > interval){
+    previousmillis = millis();
+    // 6.52 = 5 * 60 / 46 
+    speedRPM = count * 6.52;
+    count = 0;
+    lcd.setCursor(0, 0);
+    lcd.print("RPM Speed ");
+    lcd.print(speedRPM);
+  }
+} 
